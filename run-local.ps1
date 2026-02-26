@@ -24,4 +24,5 @@ if (-not $env:JAVA_HOME -or -not (Test-Path $env:JAVA_HOME)) {
     Write-Host "JAVA_HOME set to: $env:JAVA_HOME"
 }
 
+$env:APP_OPEN_BROWSER_ON_START = "true"
 & .\mvnw.cmd spring-boot:run
