@@ -20,7 +20,7 @@ public class MyController {
     @GetMapping("/")
     public ResponseEntity<Void> root() {
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create("/home"))
+                .location(URI.create("/login"))
                 .build();
     }
 
