@@ -1,4 +1,4 @@
-# Library-Management-System-WAD
+﻿# Library-Management-System-WAD
 
 Учебный проект системы управления библиотекой на Java (Spring Boot + Servlet/JSP).
 
@@ -65,21 +65,3 @@
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
-
-Если `mvnw` пишет `JAVA_HOME not found`, используйте:
-
-```powershell
-.\run-local.ps1
-```
-
-`run-local.ps1` автоматически открывает браузер на `http://localhost:8080/` после старта приложения.
-
-После запуска открыть:
-
-- `http://localhost:8080/` (редирект на `/login`);
-- `http://localhost:8080/api/books` (REST API).
-
-## Если сайт не открывается
-
-- Проверьте, что приложение действительно запущено.
-- Если порт `8080` занят другим процессом, остановите его или освободите порт.
