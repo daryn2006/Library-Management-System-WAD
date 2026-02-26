@@ -1,0 +1,12 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2026-02-14T12:40:35.051+05:00  INFO 2436 --- [           main] kz.enu.vtrestapi.VtRestApiApplication    : Starting VtRestApiApplication v1.0-SNAPSHOT using Java 24.0.2 with PID 2436 (C:\Users\Admin\IdeaProjects\demo6\target\demo6-1.0-SNAPSHOT.war started by Admin in C:\Users\Admin\IdeaProjects\demo6)
+2026-02-14T12:40:35.056+05:00  INFO 2436 --- [           main] kz.enu.vtrestapi.VtRestApiApplication    : No active profile set, falling back to 1 default profile: "default"
