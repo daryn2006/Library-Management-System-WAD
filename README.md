@@ -1,40 +1,68 @@
-﻿# Library-Management-System-WAD
+# 📚 Library Management System — WAD
 
-Учебный проект системы управления библиотекой на Java (Spring Boot + Servlet/JSP).
+Полнофункциональный учебный проект библиотечной системы с веб-интерфейсом (JSP/Servlet) и REST API на Spring Boot.
 
-Студент: Сағади Дарын, ВТиПО-33.
+**Студент:** Сағади Дарын, ВТиПО-33
 
-## Что реализовано в проекте
+## ✨ Возможности
 
-- Аутентификация и авторизация:
-- регистрация пользователя (`/register`);
-- вход в систему (`/login`);
-- выход (`/logout`);
-- защита приватных страниц через `AuthFilter`.
+| Модуль | Функциональность |
+|---|---|
+| 🔐 Аутентификация | Регистрация, вход, выход, защита приватных страниц через `AuthFilter` |
+| 🏠 Веб-интерфейс | Dashboard `/home`, страницы авторов, книг, библиотек, читателей |
+| 📚 Каталог книг | CRUD для книг, карточка книги, чтение текста из ресурсов |
+| 👤 Авторы | CRUD для авторов |
+| 🏛 Библиотеки | CRUD для библиотек |
+| 🧾 Читатели | CRUD для читателей |
+| 🔌 REST API | CRUD API для книг (`/api/books`) + demo endpoint'ы |
 
-- Веб-модуль (JSP/Servlet):
-- главная панель со статистикой (`/home`);
-- CRUD для авторов (`/authors`);
-- CRUD для книг (`/books`);
-- CRUD для библиотек (`/libraries`);
-- CRUD для читателей (`/members`);
-- карточка книги (`/book?id=...`);
-- чтение текста книги из ресурсов (`/read?id=...`);
-- страница настроек (`/settings`).
+## 🛠 Технологии
 
-- REST API:
-- `GET /api/books` - получить список книг;
-- `GET /api/books/{id}` - получить книгу по ID;
-- `POST /api/books` - создать книгу;
-- `PUT /api/books/{id}` - обновить книгу;
-- `DELETE /api/books/{id}` - удалить книгу.
+- Java 17+
+- Spring Boot 3.4.0
+- Jakarta Servlet / JSP / JSTL
+- Maven
+- In-memory хранилище (`Storage`) с тестовыми данными
 
-- Дополнительные REST endpoint'ы (демо):
-- `GET /index` - простой текстовый ответ;
-- `GET /index/specific` - JSON с тестовым студентом;
-- `POST /index/specific?name=...` - JSON со студентом по имени.
+## 🚀 Быстрый старт
 
-## Пример JSON для REST API книг
+### Минимальные требования
+
+- Java JDK 17+
+- Maven 3.6+ (или Maven Wrapper `mvnw`)
+
+### Запуск
+
+```bash
+./mvnw spring-boot:run
+```
+
+Для Windows PowerShell:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+После запуска откройте:
+
+- `http://localhost:8080/`
+- `http://localhost:8080/api/books`
+
+## 🔌 REST API
+
+**Base URL:** `http://localhost:8080`
+
+### 📘 Books API — `/api/books`
+
+| Метод | URL | Описание |
+|---|---|---|
+| GET | `/api/books` | Получить список всех книг |
+| GET | `/api/books/{id}` | Получить книгу по ID |
+| POST | `/api/books` | Создать книгу |
+| PUT | `/api/books/{id}` | Обновить книгу |
+| DELETE | `/api/books/{id}` | Удалить книгу |
+
+**Пример запроса (POST `/api/books`):**
 
 ```json
 {
@@ -46,24 +74,51 @@
 }
 ```
 
-## Технологии
+### 🧪 Demo API
 
-- Java 17
-- Spring Boot 3.4.0
-- Jakarta Servlet / JSP / JSTL
-- Maven
+| Метод | URL | Описание |
+|---|---|---|
+| GET | `/index` | Текстовый ответ `Hello World` |
+| GET | `/index/specific` | JSON с тестовым студентом |
+| POST | `/index/specific?name=...` | JSON со студентом по переданному имени |
 
-## Запуск проекта
+## 📝 Веб-маршруты
 
-1. Установить Java 17+ и Maven (или использовать `mvnw` из проекта).
-2. В корне проекта выполнить:
+- `/login`, `/register`, `/logout`
+- `/home`
+- `/authors`
+- `/books`
+- `/libraries`
+- `/members`
+- `/book?id={id}`
+- `/read?id={id}`
+- `/settings`
 
-```bash
-./mvnw spring-boot:run
+## 📁 Структура проекта
+
+```text
+src/main/java/
+├── kz/enu/vtrestapi/
+│   ├── VtRestApiApplication.java
+│   ├── controller/
+│   │   ├── LibraryBookRestController.java
+│   │   └── MyController.java
+│   └── dto/
+└── kz/example/lms/
+    ├── servlet/
+    ├── model/
+    ├── store/Storage.java
+    └── util/
+
+src/main/resources/
+├── META-INF/
+└── books/
+
+src/main/webapp/
+├── WEB-INF/jsp/
+└── style.css
 ```
 
-Для Windows PowerShell:
+## 📄 Лицензия
 
-```powershell
-.\mvnw.cmd spring-boot:run
-```
+Учебный проект для дисциплины WAD.
