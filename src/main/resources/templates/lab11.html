@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 11 - Business Logic & MVP</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="lab-page">
+<main class="lab-shell">
+    <section class="lab-hero">
+        <div>
+            <p class="eyebrow">Laboratory work 11</p>
+            <h1>Business Logic and MVP</h1>
+            <p class="lead">
+                Validation, service checks, business rules, MVP scope and error handling are demonstrated here.
+            </p>
+        </div>
+        <div class="lab-chip">
+            Logged in as <strong th:text="${username}">user</strong>
+        </div>
+    </section>
+
+    <section class="lab-grid">
+        <article class="lab-card feature-tile">
+            <span class="feature-kicker">01</span>
+            <h2>Validation</h2>
+            <p><code>@NotNull</code>, <code>@Size(min = 3)</code>, <code>@Email</code>.</p>
+        </article>
+        <article class="lab-card feature-tile">
+            <span class="feature-kicker">02</span>
+            <h2>Builder</h2>
+            <p>Profile and system blocks can be assembled step by step before rendering.</p>
+        </article>
+        <article class="lab-card feature-tile">
+            <span class="feature-kicker">03</span>
+            <h2>Factory</h2>
+            <p>Book download logic can choose between file export and external link.</p>
+        </article>
+    </section>
+
+    <section class="lab-card lab-section">
+        <h2>Workflow</h2>
+        <div class="step-list">
+            <div class="step-item">
+                <span>1</span>
+                <div>
+                    <h3>Add validation</h3>
+                    <p>Form fields are checked with annotations before hitting business logic.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <span>2</span>
+                <div>
+                    <h3>Use a builder</h3>
+                    <p>Compose the dashboard or profile block with optional pieces like avatar, counters and hints.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <span>3</span>
+                <div>
+                    <h3>Use a factory</h3>
+                    <p>Choose how a book is opened: direct file download or redirect to an external source.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <span>4</span>
+                <div>
+                    <h3>Handle exceptions</h3>
+                    <p>Validation and business errors are shown in a stable, user-friendly way.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lab-card lab-section">
+        <h2>Controller example</h2>
+        <pre class="code-block"><code>@PostMapping("/register")
+public ResponseEntity&lt;?&gt; register(@Valid @RequestBody User user) {
+    userService.register(user);
+    return ResponseEntity.ok("Success");
+}</code></pre>
+    </section>
+
+    <section class="lab-card lab-section">
+        <h2>Builder / Factory notes</h2>
+        <div class="rule-columns">
+            <div>
+                <h3>Builder</h3>
+                <p>Use it when a page or response has optional parts, like avatar, role, statistics and quick links.</p>
+            </div>
+            <div>
+                <h3>Factory</h3>
+                <p>Use it when one action needs different output strategies, like file download or an external URL.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lab-card lab-section">
+        <h2>Business rules</h2>
+        <div class="rule-columns">
+            <div>
+                <h3>English / KZ</h3>
+                <ul>
+                    <li>User must be unique</li>
+                    <li>Password minimum 6 characters</li>
+                    <li>Email must be valid</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Russian</h3>
+                <ul>
+                    <li>Пользователь уникальный</li>
+                    <li>Пароль минимум 6 символов</li>
+                    <li>Email валидный</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <nav class="lab-links">
+        <a class="link-button" th:href="@{/register}">Register</a>
+        <a class="link-button" th:href="@{/login}">Login</a>
+        <a class="link-button" th:href="@{/admin/users}">Users</a>
+        <a class="link-button ghost" th:href="@{/home}">Back to home</a>
+    </nav>
+</main>
+</body>
+</html>

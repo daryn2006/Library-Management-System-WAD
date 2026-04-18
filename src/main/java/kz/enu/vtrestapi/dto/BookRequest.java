@@ -16,6 +16,9 @@ public class BookRequest {
     @Size(max = 30, message = "ISBN must be <= 30 characters")
     private String isbn;
 
+    @Size(max = 120, message = "Genre must be <= 120 characters")
+    private String genre;
+
     @NotNull(message = "Author id is required")
     @Min(value = 1, message = "Author id must be >= 1")
     private Integer authorId;
@@ -42,6 +45,14 @@ public class BookRequest {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public Integer getAuthorId() {

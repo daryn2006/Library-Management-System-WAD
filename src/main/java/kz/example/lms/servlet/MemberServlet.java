@@ -12,24 +12,32 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/members")
-public class MemberServlet extends HttpServlet {
+public class MemberServlet extends BaseLmsServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if (!isAdmin(req)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         String editId = req.getParameter("editId");
         if (editId != null) {
-            Member member = Storage.findMemberById(Integer.parseInt(editId));
+            Member member = dataService.findMemberById(Integer.parseInt(editId));
             req.setAttribute("editMember", member);
         }
-        List<Member> members = Storage.getMembers();
+        List<Member> members = dataService.getMembers();
         req.setAttribute("members", members);
-        req.setAttribute("libraries", Storage.getLibraries());
+        req.setAttribute("libraries", dataService.getLibraries());
         req.getRequestDispatcher("/WEB-INF/jsp/members.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
+        if (!isAdmin(req)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         String action = req.getParameter("action");
         String id = req.getParameter("id");
         String fullName = req.getParameter("fullName");
@@ -38,12 +46,13 @@ public class MemberServlet extends HttpServlet {
         String libraryId = req.getParameter("libraryId");
 
         if ("create".equals(action)) {
-            Storage.createMember(fullName, email, phone, Integer.parseInt(libraryId));
+            dataService.createMember(fullName, email, phone, Integer.parseInt(libraryId));
         } else if ("update".equals(action) && id != null) {
-            Storage.updateMember(Integer.parseInt(id), fullName, email, phone, Integer.parseInt(libraryId));
+            dataService.updateMember(Integer.parseInt(id), fullName, email, phone, Integer.parseInt(libraryId));
         } else if ("delete".equals(action) && id != null) {
-            Storage.deleteMember(Integer.parseInt(id));
+            dataService.deleteMember(Integer.parseInt(id));
         }
         resp.sendRedirect(req.getContextPath() + "/members");
     }
 }
+

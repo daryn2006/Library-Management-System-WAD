@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Users</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="card wide">
+    <div class="row">
+        <h1>Users</h1>
+        <a class="link-button" th:href="@{/admin/create}">Create user</a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, stat : ${users}">
+            <td th:text="${stat.count}">1</td>
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.username}">user</td>
+            <td th:text="${user.role}">USER</td>
+            <td class="actions">
+                <a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a>
+                <a th:href="@{/admin/delete/{id}(id=${user.id})}"
+                   onclick="return confirm('Delete this user?')">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p class="muted"><a th:href="@{/home}">Back to home</a></p>
+</main>
+</body>
+</html>

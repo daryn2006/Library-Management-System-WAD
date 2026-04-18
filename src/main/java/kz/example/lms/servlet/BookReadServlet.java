@@ -2,11 +2,9 @@ package kz.example.lms.servlet;
 
 import kz.example.lms.model.Book;
 import kz.example.lms.model.BookText;
-import kz.example.lms.store.Storage;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,7 +12,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @WebServlet("/read")
-public class BookReadServlet extends HttpServlet {
+public class BookReadServlet extends BaseLmsServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -24,8 +22,8 @@ public class BookReadServlet extends HttpServlet {
             return;
         }
         int id = Integer.parseInt(idParam);
-        Book book = Storage.findBookById(id);
-        BookText bookText = Storage.findBookTextByBookId(id);
+        Book book = dataService.findBookById(id);
+        BookText bookText = dataService.findBookTextByBookId(id);
         if (book == null || bookText == null) {
             resp.sendRedirect(req.getContextPath() + "/book?id=" + id);
             return;
@@ -41,11 +39,11 @@ public class BookReadServlet extends HttpServlet {
     private String loadContent(String resourcePath) {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
             if (input == null) {
-                return "Мәтін табылмады.";
+                return "Text not found.";
             }
             return new String(input.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException ex) {
-            return "Мәтінді оқу кезінде қате шықты.";
+            return "Failed to read text.";
         }
     }
 }

@@ -12,16 +12,18 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/authors")
-public class AuthorServlet extends HttpServlet {
+public class AuthorServlet extends BaseLmsServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String query = req.getParameter("q");
         String editId = req.getParameter("editId");
-        if (editId != null) {
-            Author author = Storage.findAuthorById(Integer.parseInt(editId));
+        if (editId != null && isAdmin(req)) {
+            Author author = dataService.findAuthorById(Integer.parseInt(editId));
             req.setAttribute("editAuthor", author);
         }
-        List<Author> authors = Storage.getAuthors();
+        List<Author> authors = dataService.searchAuthors(query);
+        req.setAttribute("searchQuery", query == null ? "" : query);
         req.setAttribute("authors", authors);
         req.getRequestDispatcher("/WEB-INF/jsp/authors.jsp").forward(req, resp);
     }
@@ -29,18 +31,23 @@ public class AuthorServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
+        if (!isAdmin(req)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         String action = req.getParameter("action");
         String id = req.getParameter("id");
         String fullName = req.getParameter("fullName");
         String country = req.getParameter("country");
 
         if ("create".equals(action)) {
-            Storage.createAuthor(fullName, country);
+            dataService.createAuthor(fullName, country);
         } else if ("update".equals(action) && id != null) {
-            Storage.updateAuthor(Integer.parseInt(id), fullName, country);
+            dataService.updateAuthor(Integer.parseInt(id), fullName, country);
         } else if ("delete".equals(action) && id != null) {
-            Storage.deleteAuthor(Integer.parseInt(id));
+            dataService.deleteAuthor(Integer.parseInt(id));
         }
         resp.sendRedirect(req.getContextPath() + "/authors");
     }
 }
+

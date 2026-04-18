@@ -5,12 +5,14 @@ public class User {
     private final String fullName;
     private final String email;
     private final String role;
+    private final String avatarUrl;
 
-    public User(int id, String fullName, String email, String role) {
+    public User(int id, String fullName, String email, String role, String avatarUrl) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.role = role;
+        this.avatarUrl = avatarUrl;
     }
 
     public int getId() {
@@ -27,5 +29,9 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 }

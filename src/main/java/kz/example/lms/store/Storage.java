@@ -10,6 +10,8 @@ import kz.example.lms.model.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Storage {
@@ -69,9 +71,15 @@ public final class Storage {
 
     public static synchronized User createUser(String fullName, String email, String passwordHash, String role) {
         int id = USER_ID.getAndIncrement();
-        User user = new User(id, fullName, email, role);
+        User user = new User(id, fullName, email, role, buildAvatarUrl(fullName, email));
         USERS.add(new UserRecord(user, passwordHash));
         return user;
+    }
+
+    private static String buildAvatarUrl(String fullName, String email) {
+        String source = fullName != null && !fullName.trim().isEmpty() ? fullName.trim() : email;
+        String encoded = URLEncoder.encode(source == null ? "User" : source, StandardCharsets.UTF_8);
+        return "https://ui-avatars.com/api/?name=" + encoded + "&background=0f766e&color=fff&rounded=true&size=128";
     }
 
     public static synchronized User findUserByEmail(String email) {
@@ -179,7 +187,7 @@ public final class Storage {
         Library library = findLibraryById(libraryId);
         String authorName = author == null ? "Unknown" : author.getFullName();
         String libraryName = library == null ? "Unknown" : library.getName();
-        BOOKS.add(new Book(BOOK_ID.getAndIncrement(), title, isbn, authorId, libraryId, year, authorName, libraryName));
+        BOOKS.add(new Book(BOOK_ID.getAndIncrement(), title, "General", isbn, authorId, libraryId, year, authorName, libraryName));
     }
 
     public static synchronized void updateBook(int id, String title, String isbn, int authorId, int libraryId,
@@ -190,7 +198,7 @@ public final class Storage {
         String libraryName = library == null ? "Unknown" : library.getName();
         for (int i = 0; i < BOOKS.size(); i++) {
             if (BOOKS.get(i).getId() == id) {
-                BOOKS.set(i, new Book(id, title, isbn, authorId, libraryId, year, authorName, libraryName));
+                BOOKS.set(i, new Book(id, title, "General", isbn, authorId, libraryId, year, authorName, libraryName));
                 return;
             }
         }
@@ -202,7 +210,12 @@ public final class Storage {
 
     public static synchronized void registerBookText(int bookId, String language, String description,
                                                      String resourcePath) {
-        BOOK_TEXTS.add(new BookText(bookId, language, description, resourcePath));
+        BOOK_TEXTS.add(new BookText(bookId, language, description, resourcePath, null));
+    }
+
+    public static synchronized void registerBookText(int bookId, String language, String description,
+                                                     String resourcePath, String sourceUrl) {
+        BOOK_TEXTS.add(new BookText(bookId, language, description, resourcePath, sourceUrl));
     }
 
     public static synchronized List<Member> getMembers() {

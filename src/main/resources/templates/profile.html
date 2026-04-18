@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<main class="auth-shell profile-shell">
+    <section class="auth-spotlight">
+        <p class="eyebrow">Personal profile</p>
+        <h1 th:text="${displayName}">User</h1>
+        <p class="lead">Set your nickname, upload a profile photo and change your password here.</p>
+        <div class="profile-avatar" style="border-radius:50%;overflow:hidden;" th:if="${profile != null and profile.avatarUrl != null and !#strings.isEmpty(profile.avatarUrl)}">
+            <img th:src="${profile.avatarUrl}" alt="Avatar" style="border-radius:50%;object-fit:cover;display:block;">
+        </div>
+        <div class="profile-avatar profile-avatar--fallback" style="border-radius:50%;overflow:hidden;" th:unless="${profile != null and profile.avatarUrl != null and !#strings.isEmpty(profile.avatarUrl)}">
+            <span th:text="${displayName != null and !#strings.isEmpty(displayName) ? #strings.substring(displayName, 0, 1).toUpperCase() : 'U'}">U</span>
+        </div>
+    </section>
+
+    <section class="card auth-card">
+        <h2>Profile settings</h2>
+        <p class="msg success" th:if="${param.updated}">Profile updated successfully.</p>
+        <p class="msg error" th:if="${error}" th:text="${error}"></p>
+
+        <form method="post" th:action="@{/profile}" th:object="${profileForm}" enctype="multipart/form-data">
+            <div class="profile-section">
+                <h3>Profile info</h3>
+                <label>
+                    Full name
+                    <input type="text" th:field="*{fullName}" placeholder="Your name">
+                    <small class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
+                </label>
+                <label>
+                    Nickname
+                    <input type="text" th:field="*{nickname}" placeholder="Your nickname">
+                    <small class="field-error" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></small>
+                </label>
+                <label>
+                    Profile photo
+                    <input type="file" th:field="*{avatarFile}" accept="image/*">
+                    <small class="field-error" th:if="${#fields.hasErrors('avatarFile')}" th:errors="*{avatarFile}"></small>
+                </label>
+                <label>
+                    Avatar URL
+                    <input type="url" th:field="*{avatarUrl}" placeholder="https://...">
+                    <small class="field-error" th:if="${#fields.hasErrors('avatarUrl')}" th:errors="*{avatarUrl}"></small>
+                </label>
+            </div>
+
+            <div class="profile-section">
+                <h3>Change password</h3>
+                <label>
+                    Current password
+                    <input type="password" th:field="*{currentPassword}" placeholder="Only for password change">
+                    <small class="field-error" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}"></small>
+                </label>
+                <label>
+                    New password
+                    <input type="password" th:field="*{newPassword}" placeholder="New password">
+                    <small class="field-error" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}"></small>
+                </label>
+                <label>
+                    Confirm new password
+                    <input type="password" th:field="*{confirmPassword}" placeholder="Repeat new password">
+                    <small class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></small>
+                </label>
+            </div>
+            <div class="profile-actions">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="profile-submit" type="submit">Save profile</button>
+            </div>
+        </form>
+
+        <p class="muted"><a th:href="@{/home}">Back to dashboard</a></p>
+    </section>
+</main>
+</body>
+</html>

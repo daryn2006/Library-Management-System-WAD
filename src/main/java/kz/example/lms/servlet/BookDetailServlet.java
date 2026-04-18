@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/book")
-public class BookDetailServlet extends HttpServlet {
+public class BookDetailServlet extends BaseLmsServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -22,14 +22,15 @@ public class BookDetailServlet extends HttpServlet {
             return;
         }
         int id = Integer.parseInt(idParam);
-        Book book = Storage.findBookById(id);
+        Book book = dataService.findBookById(id);
         if (book == null) {
             resp.sendRedirect(req.getContextPath() + "/books");
             return;
         }
-        BookText bookText = Storage.findBookTextByBookId(id);
+        BookText bookText = dataService.findBookTextByBookId(id);
         req.setAttribute("book", book);
         req.setAttribute("bookText", bookText);
         req.getRequestDispatcher("/WEB-INF/jsp/book.jsp").forward(req, resp);
     }
 }
+

@@ -3,7 +3,7 @@ package kz.enu.vtrestapi.controller;
 import jakarta.validation.Valid;
 import kz.enu.vtrestapi.dto.BookRequest;
 import kz.example.lms.model.Book;
-import kz.example.lms.store.Storage;
+import kz.example.lms.service.LmsDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,14 +22,20 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class LibraryBookRestController {
 
+    private final LmsDataService dataService;
+
+    public LibraryBookRestController(LmsDataService dataService) {
+        this.dataService = dataService;
+    }
+
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(Storage.getBooks());
+        return ResponseEntity.ok(dataService.getBooks());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable int id) {
-        Book book = Storage.findBookById(id);
+        Book book = dataService.findBookById(id);
         if (book == null) {
             return ResponseEntity.notFound().build();
         }
@@ -38,8 +44,10 @@ public class LibraryBookRestController {
 
     @PostMapping
     public ResponseEntity<Book> createBook(@Valid @RequestBody BookRequest request) {
-        Storage.createBook(
+        String genre = request.getGenre() == null || request.getGenre().isBlank() ? "General" : request.getGenre().trim();
+        dataService.createBook(
                 request.getTitle(),
+                genre,
                 request.getIsbn(),
                 request.getAuthorId(),
                 request.getLibraryId(),
@@ -54,33 +62,35 @@ public class LibraryBookRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable int id, @Valid @RequestBody BookRequest request) {
-        Book existing = Storage.findBookById(id);
+        Book existing = dataService.findBookById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
-        Storage.updateBook(
+        String genre = request.getGenre() == null || request.getGenre().isBlank() ? "General" : request.getGenre().trim();
+        dataService.updateBook(
                 id,
                 request.getTitle(),
+                genre,
                 request.getIsbn(),
                 request.getAuthorId(),
                 request.getLibraryId(),
                 request.getPublishedYear()
         );
-        return ResponseEntity.ok(Storage.findBookById(id));
+        return ResponseEntity.ok(dataService.findBookById(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable int id) {
-        Book existing = Storage.findBookById(id);
+        Book existing = dataService.findBookById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
-        Storage.deleteBook(id);
+        dataService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
     private Book findLastCreatedBook() {
-        List<Book> books = Storage.getBooks();
+        List<Book> books = dataService.getBooks();
         if (books.isEmpty()) {
             return null;
         }

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/register")
+@WebServlet("/legacy-register")
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -26,9 +26,8 @@ public class RegisterServlet extends HttpServlet {
         String fullName = req.getParameter("fullName");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        String role = req.getParameter("role");
 
-        if (isBlank(fullName) || isBlank(email) || isBlank(password) || isBlank(role)) {
+        if (isBlank(fullName) || isBlank(email) || isBlank(password)) {
             req.setAttribute("error", "All fields are required.");
             req.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(req, resp);
             return;
@@ -41,7 +40,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        User user = Storage.createUser(fullName, email, SecurityUtil.sha256(password), role);
+        User user = Storage.createUser(fullName, email, SecurityUtil.sha256(password), "USER");
         HttpSession session = req.getSession(true);
         session.setAttribute("user", user);
         resp.sendRedirect(req.getContextPath() + "/home");
