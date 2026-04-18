@@ -1,66 +1,75 @@
-# Library Management System - WAD
+# Library Management System — WAD
 
-Course project for Web Application Development. The repository contains two integrated application layers:
+Учебный проект по дисциплине Web Application Development. Репозиторий объединяет два уровня одного решения:
 
-- a legacy JSP/Servlet library management UI;
-- a Spring Boot application with Thymeleaf pages, REST endpoints, security, and profile management.
+- классический веб-интерфейс на JSP/Servlet;
+- современный модуль на Spring Boot с Thymeleaf, REST API и профилем пользователя.
 
-Student: Daryn Sagadi, WTiPO-33
+Студент: **Сағади Дарын**, **ВТиПО-33**
 
-## What is included
+## О проекте
 
-### Main modules
+Это библиотечная система, в которой можно управлять книгами, авторами, библиотеками, читателями и пользовательскими профилями.  
+Проект развивался поэтапно, поэтому в репозитории сохранены как исходная servlet-часть, так и Spring Boot-часть.
 
-- Authentication: register, login, logout, protected pages.
-- Home dashboard: overview cards and navigation.
-- Books: list, details, read view, CRUD logic.
-- Authors: list and management pages.
-- Libraries: management pages.
-- Members: management pages.
-- Profile: nickname, avatar upload, avatar URL, password change.
-- Admin users: create, edit, and list users.
-- REST API: book CRUD and demo endpoints.
+## Что умеет система
 
-### Application layers
+### Основные возможности
 
-- `kz.example.lms` - servlet-based legacy web layer.
-- `kz.enu.vtrestapi` - Spring Boot layer with controllers, services, DTOs, repository, security, and error handling.
+- Регистрация, вход и выход из системы.
+- Защита приватных страниц.
+- Главная панель с навигацией и карточками.
+- Каталог книг: список, карточка книги, чтение текста.
+- CRUD для авторов.
+- CRUD для библиотек.
+- CRUD для читателей.
+- Профиль пользователя:
+  - изменение имени;
+  - изменение nickname;
+  - загрузка аватара;
+  - указание avatar URL;
+  - смена пароля.
+- Админ-панель для управления пользователями.
+- REST API для книг и демонстрационные endpoint'ы.
 
-## Technologies
+### Слои приложения
+
+- `kz.example.lms` — legacy JSP/Servlet слой.
+- `kz.enu.vtrestapi` — Spring Boot слой с контроллерами, сервисами, DTO, репозиторием, security и обработкой ошибок.
+
+## Технологии
 
 - Java 17+
 - Spring Boot 3.4.0
 - Spring Security
 - Spring Data JPA
-- Jakarta Servlet / JSP / JSTL
 - Thymeleaf
+- Jakarta Servlet / JSP / JSTL
 - Maven
-- PostgreSQL for the Spring Boot user/account data
-- In-memory storage for the legacy LMS demo data
+- PostgreSQL для модулей Spring Boot
+- In-memory storage для демонстрационных данных legacy-части
 
-## Run locally
+## Быстрый запуск
 
-### Prerequisites
+### Требования
 
-- JDK 17 or newer
-- Maven 3.6+ or Maven Wrapper
-- PostgreSQL running for the Spring Boot account module if you want that part enabled
+- JDK 17 или новее
+- Maven 3.6+ или Maven Wrapper
+- PostgreSQL, если нужен модуль с аккаунтами Spring Boot
 
-### Start the app
-
-Windows PowerShell:
+### Запуск в Windows PowerShell
 
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
 
-Or with the Maven Wrapper on Unix-like systems:
+### Запуск в Linux / macOS
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-After startup, open:
+После запуска откройте:
 
 - `http://localhost:8080/`
 - `http://localhost:8080/home`
@@ -73,21 +82,21 @@ After startup, open:
 
 Base URL: `http://localhost:8080`
 
-### Books API
+### Книги
 
-| Method | Endpoint | Description |
+| Метод | Endpoint | Описание |
 |---|---|---|
-| GET | `/api/books` | List all books |
-| GET | `/api/books/{id}` | Get book by id |
-| POST | `/api/books` | Create a book |
-| PUT | `/api/books/{id}` | Update a book |
-| DELETE | `/api/books/{id}` | Delete a book |
+| GET | `/api/books` | Получить список книг |
+| GET | `/api/books/{id}` | Получить книгу по ID |
+| POST | `/api/books` | Создать книгу |
+| PUT | `/api/books/{id}` | Обновить книгу |
+| DELETE | `/api/books/{id}` | Удалить книгу |
 
-Example request body:
+Пример тела запроса:
 
 ```json
 {
-  "title": "New book",
+  "title": "Новая книга",
   "isbn": "ISBN-12345",
   "authorId": 1,
   "libraryId": 1,
@@ -95,15 +104,15 @@ Example request body:
 }
 ```
 
-### Demo endpoints
+### Демонстрационные endpoint'ы
 
-| Method | Endpoint | Description |
+| Метод | Endpoint | Описание |
 |---|---|---|
-| GET | `/index` | Simple text response |
-| GET | `/index/specific` | JSON with a sample student |
-| POST | `/index/specific?name=...` | JSON response for the provided name |
+| GET | `/index` | Текстовый ответ `Hello World` |
+| GET | `/index/specific` | JSON с тестовым студентом |
+| POST | `/index/specific?name=...` | JSON-ответ с переданным именем |
 
-## Web routes
+## Веб-маршруты
 
 - `/login`
 - `/register`
@@ -118,7 +127,7 @@ Example request body:
 - `/settings`
 - `/profile`
 
-## Project structure
+## Структура проекта
 
 ```text
 src/main/java/
@@ -164,12 +173,12 @@ src/main/webapp/
     └── settings.jsp
 ```
 
-## Notes
+## Примечания
 
-- The repository includes both the original JSP/Servlet implementation and the newer Spring Boot implementation.
-- Some UI parts are duplicated because the project is being modernized step by step.
-- Generated logs such as `boot-out.log` and `boot-err.log` are local development artifacts and are not part of the application code.
+- В репозитории одновременно находятся исходная servlet-реализация и обновлённая Spring Boot-версия.
+- Часть экранов и логики дублируется намеренно, потому что проект развивался поэтапно.
+- Файлы `boot-out.log` и `boot-err.log` — локальные логи запуска, не часть исходного кода.
 
-## License
+## Лицензия
 
-Educational project for WAD.
+Учебный проект для дисциплины WAD.
