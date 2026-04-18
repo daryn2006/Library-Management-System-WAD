@@ -1,72 +1,93 @@
-# 📚 Library Management System — WAD
+# Library Management System - WAD
 
-Полнофункциональный учебный проект библиотечной системы с веб-интерфейсом (JSP/Servlet) и REST API на Spring Boot.
+Course project for Web Application Development. The repository contains two integrated application layers:
 
-**Студент:** Сағади Дарын, ВТиПО-33
+- a legacy JSP/Servlet library management UI;
+- a Spring Boot application with Thymeleaf pages, REST endpoints, security, and profile management.
 
-## ✨ Возможности
+Student: Daryn Sagadi, WTiPO-33
 
-| Модуль | Функциональность |
-|---|---|
-| 🔐 Аутентификация | Регистрация, вход, выход, защита приватных страниц через `AuthFilter` |
-| 🏠 Веб-интерфейс | Dashboard `/home`, страницы авторов, книг, библиотек, читателей |
-| 📚 Каталог книг | CRUD для книг, карточка книги, чтение текста из ресурсов |
-| 👤 Авторы | CRUD для авторов |
-| 🏛 Библиотеки | CRUD для библиотек |
-| 🧾 Читатели | CRUD для читателей |
-| 🔌 REST API | CRUD API для книг (`/api/books`) + demo endpoint'ы |
+## What is included
 
-## 🛠 Технологии
+### Main modules
+
+- Authentication: register, login, logout, protected pages.
+- Home dashboard: overview cards and navigation.
+- Books: list, details, read view, CRUD logic.
+- Authors: list and management pages.
+- Libraries: management pages.
+- Members: management pages.
+- Profile: nickname, avatar upload, avatar URL, password change.
+- Admin users: create, edit, and list users.
+- REST API: book CRUD and demo endpoints.
+
+### Application layers
+
+- `kz.example.lms` - servlet-based legacy web layer.
+- `kz.enu.vtrestapi` - Spring Boot layer with controllers, services, DTOs, repository, security, and error handling.
+
+## Technologies
 
 - Java 17+
 - Spring Boot 3.4.0
+- Spring Security
+- Spring Data JPA
 - Jakarta Servlet / JSP / JSTL
+- Thymeleaf
 - Maven
-- In-memory хранилище (`Storage`) с тестовыми данными
+- PostgreSQL for the Spring Boot user/account data
+- In-memory storage for the legacy LMS demo data
 
-## 🚀 Быстрый старт
+## Run locally
 
-### Минимальные требования
+### Prerequisites
 
-- Java JDK 17+
-- Maven 3.6+ (или Maven Wrapper `mvnw`)
+- JDK 17 or newer
+- Maven 3.6+ or Maven Wrapper
+- PostgreSQL running for the Spring Boot account module if you want that part enabled
 
-### Запуск
+### Start the app
 
-```bash
-./mvnw spring-boot:run
-```
-
-Для Windows PowerShell:
+Windows PowerShell:
 
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
 
-После запуска откройте:
+Or with the Maven Wrapper on Unix-like systems:
+
+```bash
+./mvnw spring-boot:run
+```
+
+After startup, open:
 
 - `http://localhost:8080/`
+- `http://localhost:8080/home`
+- `http://localhost:8080/login`
+- `http://localhost:8080/register`
+- `http://localhost:8080/profile`
 - `http://localhost:8080/api/books`
 
-## 🔌 REST API
+## REST API
 
-**Base URL:** `http://localhost:8080`
+Base URL: `http://localhost:8080`
 
-### 📘 Books API — `/api/books`
+### Books API
 
-| Метод | URL | Описание |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/books` | Получить список всех книг |
-| GET | `/api/books/{id}` | Получить книгу по ID |
-| POST | `/api/books` | Создать книгу |
-| PUT | `/api/books/{id}` | Обновить книгу |
-| DELETE | `/api/books/{id}` | Удалить книгу |
+| GET | `/api/books` | List all books |
+| GET | `/api/books/{id}` | Get book by id |
+| POST | `/api/books` | Create a book |
+| PUT | `/api/books/{id}` | Update a book |
+| DELETE | `/api/books/{id}` | Delete a book |
 
-**Пример запроса (POST `/api/books`):**
+Example request body:
 
 ```json
 {
-  "title": "Новая книга",
+  "title": "New book",
   "isbn": "ISBN-12345",
   "authorId": 1,
   "libraryId": 1,
@@ -74,17 +95,19 @@
 }
 ```
 
-### 🧪 Demo API
+### Demo endpoints
 
-| Метод | URL | Описание |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/index` | Текстовый ответ `Hello World` |
-| GET | `/index/specific` | JSON с тестовым студентом |
-| POST | `/index/specific?name=...` | JSON со студентом по переданному имени |
+| GET | `/index` | Simple text response |
+| GET | `/index/specific` | JSON with a sample student |
+| POST | `/index/specific?name=...` | JSON response for the provided name |
 
-## 📝 Веб-маршруты
+## Web routes
 
-- `/login`, `/register`, `/logout`
+- `/login`
+- `/register`
+- `/logout`
 - `/home`
 - `/authors`
 - `/books`
@@ -93,32 +116,60 @@
 - `/book?id={id}`
 - `/read?id={id}`
 - `/settings`
+- `/profile`
 
-## 📁 Структура проекта
+## Project structure
 
 ```text
 src/main/java/
 ├── kz/enu/vtrestapi/
-│   ├── VtRestApiApplication.java
+│   ├── config/
 │   ├── controller/
-│   │   ├── LibraryBookRestController.java
-│   │   └── MyController.java
-│   └── dto/
+│   ├── dto/
+│   ├── exception/
+│   ├── model/
+│   ├── pattern/
+│   ├── repository/
+│   ├── security/
+│   └── service/
 └── kz/example/lms/
-    ├── servlet/
     ├── model/
-    ├── store/Storage.java
+    ├── servlet/
+    ├── service/
+    ├── store/
     └── util/
 
 src/main/resources/
-├── META-INF/
-└── books/
+├── static/css/app.css
+└── templates/
+    ├── admin/
+    ├── home.html
+    ├── login.html
+    ├── profile.html
+    ├── register.html
+    └── lab11.html
 
 src/main/webapp/
-├── WEB-INF/jsp/
-└── style.css
+└── WEB-INF/jsp/
+    ├── partials/
+    ├── authors.jsp
+    ├── book.jsp
+    ├── books.jsp
+    ├── home.jsp
+    ├── libraries.jsp
+    ├── login.jsp
+    ├── members.jsp
+    ├── read.jsp
+    ├── register.jsp
+    └── settings.jsp
 ```
 
-## 📄 Лицензия
+## Notes
 
-Учебный проект для дисциплины WAD.
+- The repository includes both the original JSP/Servlet implementation and the newer Spring Boot implementation.
+- Some UI parts are duplicated because the project is being modernized step by step.
+- Generated logs such as `boot-out.log` and `boot-err.log` are local development artifacts and are not part of the application code.
+
+## License
+
+Educational project for WAD.
